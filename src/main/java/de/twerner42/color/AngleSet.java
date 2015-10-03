@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toCollection;
 
@@ -12,6 +13,9 @@ public class AngleSet {
     private final List<Angle> angles = new ArrayList<>();
     private final TreeSet<Angle> holes = IntStream.range(0, 360).mapToObj(Angle::new)
             .collect(toCollection(TreeSet::new));
+
+    private AngleSet() {
+    }
 
     private long weightedDistanceTo(int index, Angle angle) {
         final int weight = 360 + index - angles.size();
@@ -26,7 +30,7 @@ public class AngleSet {
         return new AngleValue(angle, sum);
     }
 
-    public Angle getNext() {
+    private Angle getNext() {
         final Angle nextAngle = holes.stream()
                 .map(this::sum)
                 .max(Comparator.<AngleValue>naturalOrder())
@@ -34,5 +38,12 @@ public class AngleSet {
         angles.add(nextAngle);
         holes.remove(nextAngle);
         return nextAngle;
+    }
+
+    public static IntStream generate() {
+        final AngleSet angleSet = new AngleSet();
+        return Stream.generate(angleSet::getNext)
+                .limit(360)
+                .mapToInt(Angle::getValue);
     }
 }

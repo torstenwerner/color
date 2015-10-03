@@ -6,8 +6,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.stream.Stream;
-
 @SpringBootApplication
 public class ColorApplication implements CommandLineRunner {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -18,10 +16,6 @@ public class ColorApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        final AngleSet angleSet = new AngleSet();
-        Stream.generate(angleSet::getNext)
-                .limit(360)
-                .map(Angle::getValue)
-                .forEach(value -> logger.info("{}", value));
+        AngleSet.generate().forEach(value -> logger.info("{}", value));
     }
 }
