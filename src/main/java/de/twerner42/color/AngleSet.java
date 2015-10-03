@@ -25,19 +25,17 @@ public class AngleSet {
         return holes.stream();
     }
 
-    private static long squared(int value) {
-        return value * value;
-    }
-
-    private long squaredWeightedDistanceTo(int index, Angle angle) {
+    private long weightedDistanceTo(int index, Angle angle) {
         final int weight = 360 + index - angles.size();
-        return weight * squared(Angle.distance(angles.get(index), angle));
+        final int distance = Angle.distance(angles.get(index), angle);
+        return weight * distance * (720 - distance);
     }
 
-    public long sum(Angle angle) {
+    public AngleValue sum(Angle angle) {
         Objects.requireNonNull(angle);
-        return IntStream.range(0, angles.size())
-                .mapToLong(i -> squaredWeightedDistanceTo(i, angle))
+        final long sum = IntStream.range(0, angles.size())
+                .mapToLong(i -> weightedDistanceTo(i, angle))
                 .sum();
+        return new AngleValue(angle, sum);
     }
 }
