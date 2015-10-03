@@ -14,6 +14,11 @@ public class Angle implements Comparable<Angle> {
         this.value = value;
     }
 
+    static int distance(Angle angle01, Angle angle02) {
+        final int rawDistance = Math.abs(angle01.getValue() - angle02.getValue());
+        return rawDistance <= 180 ? rawDistance : 360 - rawDistance;
+    }
+
     public int getValue() {
         return value;
     }

@@ -25,18 +25,13 @@ public class AngleSet {
         return holes.stream();
     }
 
-    private static int distance(Angle angle01, Angle angle02) {
-        final int rawDistance = Math.abs(angle01.getValue() - angle02.getValue());
-        return rawDistance <= 180 ? rawDistance : 360 - rawDistance;
-    }
-
     private static long squared(int value) {
         return value * value;
     }
 
     private long squaredWeightedDistanceTo(int index, Angle angle) {
         final int weight = 360 + index - angles.size();
-        return weight * squared(distance(angles.get(index), angle));
+        return weight * squared(Angle.distance(angles.get(index), angle));
     }
 
     public long sum(Angle angle) {
