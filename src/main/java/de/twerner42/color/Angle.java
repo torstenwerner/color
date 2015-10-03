@@ -2,13 +2,14 @@ package de.twerner42.color;
 
 import java.util.Objects;
 
+import static de.twerner42.color.AngleSet.DEGREES;
 import static java.lang.String.format;
 
 public class Angle implements Comparable<Angle> {
     private final int value;
 
     public Angle(int value) {
-        if (value < 0 || value >= 360) {
+        if (value < 0 || value >= DEGREES) {
             throw new AssertionError(value);
         }
         this.value = value;
@@ -16,7 +17,7 @@ public class Angle implements Comparable<Angle> {
 
     static int distance(Angle angle01, Angle angle02) {
         final int rawDistance = Math.abs(angle01.getValue() - angle02.getValue());
-        return rawDistance <= 180 ? rawDistance : 360 - rawDistance;
+        return rawDistance <= DEGREES / 2 ? rawDistance : DEGREES - rawDistance;
     }
 
     public int getValue() {

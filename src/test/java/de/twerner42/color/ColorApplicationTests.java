@@ -14,5 +14,6 @@ public class ColorApplicationTests {
         assertThat(angles[1], is(180));
         assertThat(angles[4], is(45));
         assertThat(angles[47], is(231));
+        assertThat(angles[359], is(151));
     }
 }

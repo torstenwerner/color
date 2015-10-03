@@ -10,17 +10,20 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toCollection;
 
 public class AngleSet {
+    public static final int DEGREES = 360;
+    public static final int ROOT = 2 * DEGREES;
+
     private final List<Angle> angles = new ArrayList<>();
-    private final TreeSet<Angle> holes = IntStream.range(0, 360).mapToObj(Angle::new)
+    private final TreeSet<Angle> holes = IntStream.range(0, DEGREES).mapToObj(Angle::new)
             .collect(toCollection(TreeSet::new));
 
     private AngleSet() {
     }
 
     private long weightedDistanceTo(int index, Angle angle) {
-        final int weight = 360 + index - angles.size();
+        final int weight = DEGREES + index - angles.size();
         final int distance = Angle.distance(angles.get(index), angle);
-        return weight * distance * (720 - distance);
+        return weight * distance * (ROOT - distance);
     }
 
     private AngleValue sum(Angle angle) {
@@ -43,7 +46,7 @@ public class AngleSet {
     public static IntStream generate() {
         final AngleSet angleSet = new AngleSet();
         return Stream.generate(angleSet::getNext)
-                .limit(360)
+                .limit(DEGREES)
                 .mapToInt(Angle::getValue);
     }
 }
