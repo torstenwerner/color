@@ -1,16 +1,18 @@
 package de.twerner42.color;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ColorApplication.class)
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 public class ColorApplicationTests {
-
-	@Test
-	public void contextLoads() {
-	}
-
+    @Test
+    public void values() {
+        final int[] angles = AngleSet.generate().toArray();
+        assertThat(angles.length, is(360));
+        assertThat(angles[0], is(0));
+        assertThat(angles[1], is(180));
+        assertThat(angles[4], is(45));
+        assertThat(angles[47], is(231));
+    }
 }
