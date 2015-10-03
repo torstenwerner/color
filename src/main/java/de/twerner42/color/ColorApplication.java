@@ -13,7 +13,7 @@ public class ColorApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         final AngleSet angleSet = new AngleSet();
-        angleSet.add(0);
+        angleSet.add(new Angle(0));
         angleSet.getHoles()
                 .map(angleSet::sum)
                 .forEach(System.out::println);
