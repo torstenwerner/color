@@ -13,7 +13,7 @@ public class AngleSet {
     public static final int DEGREES = 360;
     public static final int ROOT = 2 * DEGREES;
 
-    private final List<Angle> angles = new ArrayList<>();
+    private final List<Angle> angles = new ArrayList<>(DEGREES);
     private final TreeSet<Angle> holes = IntStream.range(0, DEGREES).mapToObj(Angle::new)
             .collect(toCollection(TreeSet::new));
 
