@@ -1,43 +1,35 @@
 package de.twerner42.color;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Stopwatch;
-import org.junit.runner.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadMXBean;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
+import static java.lang.String.format;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 public class ColorApplicationTests {
-    final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private void logInfo(Description description, String status, long nanos) {
-        String testName = description.getMethodName();
-        logger.info("Test {} {}, spent {} milliseconds",
-                testName, status, TimeUnit.NANOSECONDS.toMillis(nanos));
-    }
+    private final ThreadMXBean bean = ManagementFactory.getThreadMXBean();
 
-    @Rule
-    public Stopwatch stopwatch = new Stopwatch() {
-        @Override
-        protected void succeeded(long nanos, Description description) {
-            logInfo(description, "success", nanos);
-        }
-    };
-
-    @Test
-    public void performance01() {
-        IntStream.range(0, 100).forEach(ignored -> AngleSet.generate().toArray());
+    private void runTask(int id) {
+        final String taskName = format("task%03d", id);
+        final long startNs = bean.getCurrentThreadUserTime();
+        AngleSet.generate().toArray();
+        final long stopNs = bean.getCurrentThreadUserTime();
+        final long ms = TimeUnit.NANOSECONDS.toMillis(stopNs - startNs);
+        logger.info("{}: {} ms", taskName, ms);
     }
 
     @Test
-    public void performance02() {
-        IntStream.range(0, 100).forEach(ignored -> AngleSet.generate().toArray());
+    public void performance() {
+        IntStream.range(0, 100).forEach(this::runTask);
     }
 
     @Test
