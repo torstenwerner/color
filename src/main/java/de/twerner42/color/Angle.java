@@ -1,11 +1,9 @@
 package de.twerner42.color;
 
-import java.util.Objects;
-
 import static de.twerner42.color.AngleSet.DEGREES;
 import static java.lang.String.format;
 
-public class Angle implements Comparable<Angle> {
+public class Angle {
     private final int value;
 
     public Angle(int value) {
@@ -42,11 +40,5 @@ public class Angle implements Comparable<Angle> {
     @Override
     public String toString() {
         return format("Angle{value=%d}", value);
-    }
-
-    @Override
-    public int compareTo(Angle other) {
-        Objects.requireNonNull(other);
-        return Integer.compare(value, other.value);
     }
 }

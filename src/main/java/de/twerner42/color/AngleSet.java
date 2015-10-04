@@ -15,7 +15,7 @@ public class AngleSet {
 
     private final List<Angle> angles = new ArrayList<>(DEGREES);
     private final TreeSet<Angle> holes = IntStream.range(0, DEGREES).mapToObj(Angle::new)
-            .collect(toCollection(TreeSet::new));
+            .collect(toCollection(() -> new TreeSet<>(Comparator.comparingInt(Angle::getValue))));
 
     private AngleSet() {
     }
@@ -36,7 +36,7 @@ public class AngleSet {
     private Angle getNext() {
         final Angle nextAngle = holes.stream()
                 .map(this::sum)
-                .max(Comparator.<AngleValue>naturalOrder())
+                .max(Comparator.comparingLong(AngleValue::getValue))
                 .get().getAngle();
         angles.add(nextAngle);
         holes.remove(nextAngle);
