@@ -13,31 +13,31 @@ public class AngleSet {
     public static final int DEGREES = 360;
     public static final int ROOT = 2 * DEGREES;
 
-    private final List<Angle> angles = new ArrayList<>(DEGREES);
-    private final TreeSet<Angle> holes = IntStream.range(0, DEGREES).mapToObj(Angle::new)
-            .collect(toCollection(() -> new TreeSet<>(Comparator.comparingInt(Angle::getValue))));
+    private final List<AngleValue> angles = new ArrayList<>(DEGREES);
+    private final TreeSet<AngleValue> holes = IntStream.range(0, DEGREES).mapToObj(AngleValue::new)
+            .collect(toCollection(() -> new TreeSet<>(Comparator.comparingInt(AngleValue::getAngle))));
 
     private AngleSet() {
     }
 
-    private long weightedDistanceTo(int index, Angle angle) {
+    private long weightedDistanceTo(int index, AngleValue angle) {
         final int weight = DEGREES + index - angles.size();
-        final int distance = Angle.distance(angles.get(index), angle);
+        final int distance = AngleValue.distance(angles.get(index), angle);
         return weight * distance * (ROOT - distance);
     }
 
-    private AngleValue sum(Angle angle) {
+    private void sum(AngleValue angle) {
         final long sum = IntStream.range(0, angles.size())
                 .mapToLong(i -> weightedDistanceTo(i, angle))
                 .sum();
-        return new AngleValue(angle, sum);
+        angle.setValue(sum);
     }
 
-    private Angle getNext() {
-        final Angle nextAngle = holes.stream()
-                .map(this::sum)
+    private AngleValue getNext() {
+        final AngleValue nextAngle = holes.stream()
+                .peek(this::sum)
                 .max(Comparator.comparingLong(AngleValue::getValue))
-                .get().getAngle();
+                .get();
         angles.add(nextAngle);
         holes.remove(nextAngle);
         return nextAngle;
@@ -47,6 +47,6 @@ public class AngleSet {
         final AngleSet angleSet = new AngleSet();
         return Stream.generate(angleSet::getNext)
                 .limit(DEGREES)
-                .mapToInt(Angle::getValue);
+                .mapToInt(AngleValue::getAngle);
     }
 }
