@@ -1,10 +1,7 @@
 (function () {
-    function draw(hues) {
-        var canvas = document.getElementById('colors');
-        var context = canvas.getContext('2d');
-        var lineWidth = 5;
-        canvas.setAttribute('height', (hues.length * lineWidth).toString());
+    var lineWidth = 5;
 
+    function draw(context, hues) {
         for (var i = 0; i < hues.length; i++) {
             context.beginPath();
             var y = (2 * i + 1) * lineWidth;
@@ -23,10 +20,12 @@
         }
     }
 
-    angular.module('Colors', []).controller('Canvas', function ($http) {
+    angular.module('Colors', []).controller('Canvas', function ($http, $element) {
+        var context = $element[0].getContext('2d');
         $http.get('angles').
             success(function (data) {
-                draw(data);
+                $element[0].setAttribute('height', (data.length * lineWidth).toString());
+                draw(context, data);
             });
     });
 }());
