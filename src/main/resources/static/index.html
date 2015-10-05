@@ -19,10 +19,8 @@
         context.moveTo(0, y);
         context.lineTo(499, y);
         context.lineWidth = lineWidth;
-        var red = Math.floor(Math.random() * 256);
-        var green = Math.floor(Math.random() * 256);
-        var blue = Math.floor(Math.random() * 256);
-        context.strokeStyle = 'rgb(' + red + ',' + green + ',' + blue + ')';
+        var hue = Math.floor(Math.random() * 360);
+        context.strokeStyle = 'hsl(' + hue + ', 100%, 50%)';
         context.stroke();
     }
 </script>
