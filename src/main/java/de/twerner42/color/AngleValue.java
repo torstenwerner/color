@@ -1,10 +1,12 @@
 package de.twerner42.color;
 
 import static de.twerner42.color.AngleSet.DEGREES;
+import static de.twerner42.color.AngleSet.ROOT;
 import static java.lang.String.format;
 
 public class AngleValue {
     private final int angle;
+    private long sum = 0;
     private long value = 0;
 
     public AngleValue(int angle) {
@@ -27,8 +29,11 @@ public class AngleValue {
         return value;
     }
 
-    public void setValue(long value) {
-        this.value = value;
+    public void updateValue(AngleValue otherAngle) {
+        final int distance2other = distance(this, otherAngle);
+        final int rawValue = distance2other * (ROOT - distance2other);
+        value += (DEGREES - 1) * rawValue - sum;
+        sum += rawValue;
     }
 
     @Override

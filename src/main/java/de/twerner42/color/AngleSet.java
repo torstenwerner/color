@@ -1,8 +1,6 @@
 package de.twerner42.color;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -13,33 +11,18 @@ public class AngleSet {
     public static final int DEGREES = 360;
     public static final int ROOT = 2 * DEGREES;
 
-    private final List<AngleValue> angles = new ArrayList<>(DEGREES);
-    private final TreeSet<AngleValue> holes = IntStream.range(0, DEGREES).mapToObj(AngleValue::new)
+    private final TreeSet<AngleValue> candidates = IntStream.range(0, DEGREES).mapToObj(AngleValue::new)
             .collect(toCollection(() -> new TreeSet<>(Comparator.comparingInt(AngleValue::getAngle))));
 
     private AngleSet() {
     }
 
-    private long weightedDistanceTo(int index, AngleValue angle) {
-        final int weight = DEGREES + index - angles.size();
-        final int distance = AngleValue.distance(angles.get(index), angle);
-        return weight * distance * (ROOT - distance);
-    }
-
-    private void sum(AngleValue angle) {
-        final long sum = IntStream.range(0, angles.size())
-                .mapToLong(i -> weightedDistanceTo(i, angle))
-                .sum();
-        angle.setValue(sum);
-    }
-
     private AngleValue getNext() {
-        final AngleValue nextAngle = holes.stream()
-                .peek(this::sum)
+        final AngleValue nextAngle = candidates.stream()
                 .max(Comparator.comparingLong(AngleValue::getValue))
                 .get();
-        angles.add(nextAngle);
-        holes.remove(nextAngle);
+        candidates.remove(nextAngle);
+        candidates.forEach(candidate -> candidate.updateValue(nextAngle));
         return nextAngle;
     }
 

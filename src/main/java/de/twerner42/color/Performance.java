@@ -34,8 +34,8 @@ public class Performance {
         final long startNs = bean.getCurrentThreadUserTime();
         AngleSet.generate().toArray();
         final long stopNs = bean.getCurrentThreadUserTime();
-        final long ms = TimeUnit.NANOSECONDS.toMillis(stopNs - startNs);
-        logger.info("{}: {} ms", taskName, ms);
+        final long us = TimeUnit.NANOSECONDS.toMicros(stopNs - startNs);
+        logger.info("{}: {} us", taskName, us);
     }
 
     private Future<?> submitTask(int id) {
