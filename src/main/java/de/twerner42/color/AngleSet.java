@@ -2,6 +2,7 @@ package de.twerner42.color;
 
 import java.util.Comparator;
 import java.util.TreeSet;
+import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -11,7 +12,9 @@ public class AngleSet {
     public static final int DEGREES = 360;
     public static final int ROOT = 2 * DEGREES;
 
-    private final TreeSet<AngleValue> candidates = IntStream.range(0, DEGREES).mapToObj(AngleValue::new)
+    private final IntFunction<AngleValue> factory = AngleValueArithmetic::new;
+
+    private final TreeSet<AngleValue> candidates = IntStream.range(0, DEGREES).mapToObj(factory)
             .collect(toCollection(() -> new TreeSet<>(Comparator.comparingInt(AngleValue::getAngle))));
 
     private AngleSet() {
