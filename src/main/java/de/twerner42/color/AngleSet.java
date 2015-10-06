@@ -13,6 +13,7 @@ public class AngleSet {
     public static final int ROOT = 2 * DEGREES;
 
     private final IntFunction<AngleValue> factory = AngleValueArithmetic::new;
+    //private final IntFunction<AngleValue> factory = AngleValueGeometric::new;
 
     private final TreeSet<AngleValue> candidates = IntStream.range(0, DEGREES).mapToObj(factory)
             .collect(toCollection(() -> new TreeSet<>(Comparator.comparingInt(AngleValue::getAngle))));
