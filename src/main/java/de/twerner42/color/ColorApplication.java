@@ -1,18 +1,13 @@
 package de.twerner42.color;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ColorApplication implements CommandLineRunner {
+public class ColorApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ColorApplication.class, args);
-    }
-
-    @Override
-    public void run(String... args) throws Exception {
         if (args.length != 1) {
+            SpringApplication.run(ColorApplication.class, args);
             return;
         }
 
