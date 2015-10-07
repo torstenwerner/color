@@ -18,8 +18,8 @@ public class ColorApplicationTests {
         assertThat(angles.length, is(360));
         assertThat(angles[0], is(0));
         assertThat(angles[1], is(180));
-        assertThat(angles[4], is(45));
-        assertThat(angles[47], is(231));
-        assertThat(angles[359], is(151));
+        assertThat(angles[4], is(326));
+        assertThat(angles[47], is(5));
+        assertThat(angles[359], is(91));
     }
 }

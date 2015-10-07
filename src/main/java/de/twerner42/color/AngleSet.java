@@ -1,22 +1,23 @@
 package de.twerner42.color;
 
+import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.TreeSet;
+import java.util.List;
 import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
 
 public class AngleSet {
     public static final int DEGREES = 360;
     public static final int ROOT = 2 * DEGREES;
 
-    private final IntFunction<AngleValue> factory = AngleValueArithmetic::new;
-    //private final IntFunction<AngleValue> factory = AngleValueGeometric::new;
+    //private final IntFunction<AngleValue> factory = AngleValueArithmetic::new;
+    private final IntFunction<AngleValue> factory = AngleValueGeometric::new;
 
-    private final TreeSet<AngleValue> candidates = IntStream.range(0, DEGREES).mapToObj(factory)
-            .collect(toCollection(() -> new TreeSet<>(Comparator.comparingInt(AngleValue::getAngle))));
+    private List<AngleValue> candidates = IntStream.range(0, DEGREES).mapToObj(factory)
+            .collect(toList());
 
     private AngleSet() {
     }
@@ -25,9 +26,17 @@ public class AngleSet {
         final AngleValue nextAngle = candidates.stream()
                 .max(Comparator.comparingLong(AngleValue::getValue))
                 .get();
-        candidates.remove(nextAngle);
+        reorderCandidates(nextAngle);
         candidates.forEach(candidate -> candidate.updateValue(nextAngle));
         return nextAngle;
+    }
+
+    private void reorderCandidates(AngleValue nextAngle) {
+        final int indexOf = candidates.indexOf(nextAngle);
+        final List<AngleValue> head = candidates.subList(0, indexOf);
+        final List<AngleValue> tail = candidates.subList(indexOf + 1, candidates.size());
+        candidates = new ArrayList<>(tail);
+        candidates.addAll(head);
     }
 
     public static IntStream generate() {
