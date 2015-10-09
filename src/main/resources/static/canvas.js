@@ -2,16 +2,14 @@
     var module = angular.module('Colors', []);
 
     module.service("HueList", function ($http) {
-        var hueList = [];
-
-        $http.get('angles').
-            then(function (response) {
-                response.data.forEach(function (hue) {
-                    hueList.push(hue);
-                });
-            });
-
-        return hueList;
+        return {
+            fetch: function () {
+                return $http.get('angles').
+                    then(function (response) {
+                        return response.data;
+                    });
+            }
+        };
     });
 
     module.controller('Canvas', function ($scope, HueList) {
@@ -25,6 +23,8 @@
             return "hsl(" + hue + ", 100%, 50%)";
         };
 
-        $scope.hueList = HueList;
+        HueList.fetch().then(function(hueList) {
+            $scope.hueList = hueList;
+        });
     });
 }());
