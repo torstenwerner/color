@@ -1,35 +1,18 @@
 (function () {
-    var lineWidth = 5;
+    angular.module('Colors', []).controller('Canvas', function ($scope, $http) {
+        $scope.lineWidth = 5;
 
-    function draw(context, hues) {
-        for (var i = 0; i < hues.length; i++) {
-            context.beginPath();
-            var y = (2 * i + 1) * lineWidth;
-            context.moveTo(30, y);
-            context.lineTo(499, y);
-            context.lineWidth = lineWidth;
-            context.strokeStyle = 'hsl(' + hues[i] + ', 100%, 50%)';
-            context.stroke();
+        $scope.getY = function(index) {
+            return (2 * index + 1) * $scope.lineWidth;
+        };
 
-            context.textAlign = 'right';
-            context.textBaseline = 'middle';
-            context.fillText(hues[i], 19, y);
+        $scope.color = function(hue) {
+            return "hsl(" + hue + ", 100%, 50%)";
+        };
 
-            context.beginPath();
-            context.moveTo(30, y + lineWidth);
-            context.lineTo(499, y + lineWidth);
-            context.lineWidth = lineWidth;
-            context.strokeStyle = '#ffffff';
-            context.stroke();
-        }
-    }
-
-    angular.module('Colors', []).controller('Canvas', function ($http, $element) {
-        var context = $element[0].getContext('2d');
         $http.get('angles').
             success(function (data) {
-                $element[0].height = data.length * 2 * lineWidth;
-                draw(context, data);
+                $scope.hueList = data;
             });
     });
 }());
