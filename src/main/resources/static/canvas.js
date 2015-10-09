@@ -5,8 +5,8 @@
         var hueList = [];
 
         $http.get('angles').
-            success(function (data) {
-                data.forEach(function (hue) {
+            then(function (response) {
+                response.data.forEach(function (hue) {
                     hueList.push(hue);
                 });
             });
