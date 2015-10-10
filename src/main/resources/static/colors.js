@@ -1,29 +1,18 @@
 (function () {
     var module = angular.module('Colors', []);
 
-    module.service("HueList", function ($http) {
-        return {
-            fetch: function () {
-                return $http.get('angles').
-                    then(function (response) {
-                        return response.data;
-                    });
-            }
-        };
-    });
+    module.service("HueList", ($http) => ({
+        fetch: () => $http.get('angles').then(response => response.data)
+    }));
 
-    module.controller('Canvas', function ($scope, HueList) {
+    module.controller('Canvas', ($scope, HueList) => {
         $scope.lineWidth = 5;
 
-        $scope.getY = function (index) {
-            return (2 * index + 1) * $scope.lineWidth;
-        };
+        $scope.getY = index => (2 * index + 1) * $scope.lineWidth;
 
-        $scope.color = function (hue) {
-            return "hsl(" + hue + ", 100%, 50%)";
-        };
+        $scope.color = hue => "hsl(" + hue + ", 100%, 50%)";
 
-        HueList.fetch().then(function(hueList) {
+        HueList.fetch().then((hueList) => {
             $scope.hueList = hueList;
         });
     });
