@@ -10,14 +10,16 @@
         };
     });
 
+    module.filter("color", function() {
+        return hue => "hsl(" + hue + ", 100%, 50%)";
+    });
+
     module.controller('SvgController', function (HueList) {
         var svg = this;
 
         svg.lineWidth = 5;
 
         svg.getY = index => (2 * index + 1) * svg.lineWidth;
-
-        svg.color = hue => "hsl(" + hue + ", 100%, 50%)";
 
         HueList.fetch().then((hueList) => {
             svg.hueList = hueList;

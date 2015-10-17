@@ -1,6 +1,7 @@
 <svg id="svgelem" height="3600" xmlns="http://www.w3.org/2000/svg" ng-controller="SvgController as svg">
     <g ng-repeat="hue in svg.hueList">
         <text x="25" ng-attr-y="{{ svg.getY($index) }}" style="text-anchor: end" ng-if="$odd">{{ hue }}</text>
-        <rect x="30" ng-attr-y="{{ svg.getY($index) }}" width="300" ng-attr-height="{{ svg.lineWidth }}" fill="{{ svg.color(hue) }}"></rect>
+        <rect x="30" ng-attr-y="{{ svg.getY($index) }}" width="300" ng-attr-height="{{ svg.lineWidth }}"
+              fill="{{ hue | color }}"></rect>
     </g>
 </svg>
