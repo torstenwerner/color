@@ -10,15 +10,17 @@
         };
     });
 
-    module.controller('Canvas', ($scope, HueList) => {
-        $scope.lineWidth = 5;
+    module.controller('SvgController', function (HueList) {
+        var svg = this;
 
-        $scope.getY = index => (2 * index + 1) * $scope.lineWidth;
+        svg.lineWidth = 5;
 
-        $scope.color = hue => "hsl(" + hue + ", 100%, 50%)";
+        svg.getY = index => (2 * index + 1) * svg.lineWidth;
+
+        svg.color = hue => "hsl(" + hue + ", 100%, 50%)";
 
         HueList.fetch().then((hueList) => {
-            $scope.hueList = hueList;
+            svg.hueList = hueList;
         });
     });
 }());
