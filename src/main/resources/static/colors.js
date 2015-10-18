@@ -1,20 +1,19 @@
-(function () {
-    var module = angular.module('Colors', []);
+angular.module('Colors', []).
 
-    module.service("HueList", function ($http, $location) {
+    service("HueList", function ($http, $location) {
         var inDebugger = $location.port() == 63342;
         var url = inDebugger ? "http://localhost:8080/angles" : "angles";
 
         return {
             fetch: () => $http.get(url).then(response => response.data)
         };
-    });
+    }).
 
-    module.filter("color", function() {
+    filter("color", function () {
         return hue => "hsl(" + hue + ", 100%, 50%)";
-    });
+    }).
 
-    module.controller('SvgController', function (HueList) {
+    controller('SvgController', function (HueList) {
         var svg = this;
 
         svg.lineWidth = 5;
@@ -24,5 +23,19 @@
         HueList.fetch().then((hueList) => {
             svg.hueList = hueList;
         });
+    }).
+
+    directive('colorBar', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                y: '@',
+                width: '@',
+                color: '@',
+                label: '@',
+                showlabel: '='
+            },
+            templateUrl: 'colorbar.html'
+        }
     });
-}());
