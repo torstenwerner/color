@@ -25,6 +25,16 @@ angular.module('Colors', []).
         });
     }).
 
+    directive('colorDiagram', function() {
+        return {
+            retrict: 'E',
+            replace: true,
+            controller: 'SvgController',
+            controllerAs: 'svg',
+            templateUrl: 'colordiagram.html'
+        }
+    }).
+
     directive('colorBar', function() {
         return {
             restrict: 'E',
